@@ -1,0 +1,8 @@
+/dwellir_cli.egg-info/
+/build/
+/venv/
+/polkacli.egg-info/
+/dist/
+/.idea/
+/polkacli/__pycache__/
+/polkacli/polkacli.egg-info/
