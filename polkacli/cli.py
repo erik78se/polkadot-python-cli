@@ -98,7 +98,7 @@ def sessionkey(help="Get a new session key via rpc."):
     Get a new session key via rpc.
     """
     try:
-        print(rpc.et_session_key())
+        print(rpc.get_session_key())
     except:
         print("Failed getting new session key. Is polkadot running on localhost?")
 
