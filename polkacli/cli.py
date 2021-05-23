@@ -35,11 +35,13 @@ def subcommand(args=[], parent=subparsers):
         $ python cli.py subcommand -d
 
     """
+
     def decorator(func):
         parser = parent.add_parser(func.__name__, description=func.__doc__)
         for arg in args:
             parser.add_argument(*arg[0], **arg[1])
         parser.set_defaults(func=func)
+
     return decorator
 
 
@@ -53,9 +55,9 @@ def subcommand(args=[], parent=subparsers):
 #     print(args)
 #
 #
-#@subcommand([argument("-f", "--filename", help="A thing with a filename")])
-#def filename(args):
-#    print(args.filename)
+# @subcommand([argument("-f", "--filename", help="A thing with a filename")])
+# def filename(args):
+#     print(args.filename)
 #
 #
 # @subcommand([argument("name", help="Name")])
@@ -72,6 +74,7 @@ def polkaversion(help="Get running version of polkadot via rpc."):
     except:
         print("Failed getting polkadot version. Is polkadot running on localhost?")
 
+
 @subcommand()
 def syncing(help="Get sync status for polkadot via rpc."):
     """
@@ -81,6 +84,7 @@ def syncing(help="Get sync status for polkadot via rpc."):
         print(rpc.is_syncing())
     except:
         print("Failed getting polkadot sync status. Is polkadot running on localhost?")
+
 
 @subcommand()
 def validating(help="Checks if system_nodeRoles is Authority via rpc (E.g. validating)."):
@@ -92,8 +96,9 @@ def validating(help="Checks if system_nodeRoles is Authority via rpc (E.g. valid
     except:
         print("Failed getting system_nodeRoles to check validator status. Is polkadot running on localhost?")
 
+
 @subcommand()
-def sessionkey(help="Get a new session key via rpc."):
+def newkey(help="Get a new session key via rpc."):
     """
     Get a new session key via rpc.
     """
@@ -101,6 +106,18 @@ def sessionkey(help="Get a new session key via rpc."):
         print(rpc.get_session_key())
     except:
         print("Failed getting new session key. Is polkadot running on localhost?")
+
+
+@subcommand([argument("sessionkey", help="A sessionkey on the format: 0xb75f94a5eec...")])
+def haskey(args):
+    """
+    Checks if the supplied session key is hosted on this node.
+    """
+    print(args.sessionkey)
+    try:
+        print(rpc.has_sessionKey(args.sessionkey))
+    except:
+        print("Failed checking for session key. Is polkadot running on localhost?")
 
 
 def main():
@@ -112,6 +129,7 @@ def main():
         cli.print_help()
     else:
         args.func(args)
+
 
 if __name__ == "__main__":
     args = cli.parse_args()

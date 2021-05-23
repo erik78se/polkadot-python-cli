@@ -39,3 +39,15 @@ def get_version():
     result = response_json['result']
     version_number = re.search(r'([\d.]+)', result).group(1)
     return version_number
+
+def has_sessionKey(session_key):
+    """
+    Checks if this node has the supplied session_key (E.g. 0xb75f94a5eec... )
+    :param session_key: string
+    :return: boolean
+    """
+    data = '{"id": 1, "jsonrpc":"2.0", "method": "author_hasSessionKeys", "params":["' + session_key + '"]}'
+    response = requests.post(url=SERVER_ADDRESS, headers=HEADERS, data=data)
+    response_json = json.loads(response.text)
+    result = response_json['result']
+    return result
